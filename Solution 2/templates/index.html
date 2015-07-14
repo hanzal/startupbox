@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Compare.img</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet">
+
+    <!-- Material Design for Bootstrap -->
+    <link href="{{ url_for('static', filename='css/roboto.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/material-fullpalette.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/ripples.min.css')}}" rel="stylesheet">
+
+
+  <!-- favicon
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='images/favicon.png') }}"/> -->
+  </head>
+<style type="text/css">
+  .navbar-nav > li{
+  font-size: 14px;
+}
+</style>
+  <body style="padding-top: 70px;">
+
+    <!-- Fixed navbar -->
+    {% include 'navbar.html' %}
+
+    <div class="container">
+      <div class="col-md-12">
+         <a href="#" class="btn btn-inverse disabled btn-lg btn-block">Compare Images</a>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+          <form id="form"  role="form" method="post">
+            <div class="col-md-5 pull-left">
+                <div class="picture col-md-10 col-md-offset-1" id="picture1"></div>
+                
+                  <input type="url" class="form-control floating-label" onChange='load_image1();'name="image1" id="image1" placeholder="URL for 1st image" autofocus>
+              
+            </div>
+            <div class="col-md-2">
+              <div class="col-md-12 col-md-offset-2">
+                <button class="btn btn-inverse btn-fab btn-raised mdi-av-shuffle" type="submit"></button>
+                <br />
+                <label>Compare</label>
+              </div>
+            </div>
+            <div class="col-md-5 pull-right">
+                <div class="picture col-md-10 col-md-offset-1" id="picture2"></div>
+                  <input type="url" class="form-control floating-label" onChange='load_image2();' name="image2" id="image2" placeholder="URL for 2nd image" autofocus>
+            </div>
+          </form>
+          </div>
+        </div> 
+      </div>
+
+        
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<script src="{{ url_for('static', filename='js/jquery.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/material.min.js')}}"></script>
+     <script src="{{ url_for('static', filename='js/ripples.min.js')}}"></script>
+  </body>
+</html>
+
+<script type="text/javascript">
+var img1;
+var img2;
+var diff_image = new Image();
+var diffImage;
+function load_image1()
+{ 
+  var img = new Image();  
+  img.src = document.getElementById('image1').value;
+  img.style.width='100%';
+  $("#picture1").append(img);
+}
+
+function load_image2()
+{ 
+    var img = new Image();  
+  img.src = document.getElementById('image2').value;
+  img.style.width='100%';
+  $("#picture2").append(img);
+}
+
+</script>
+

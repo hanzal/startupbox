@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Compare.img</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet">
+
+    <!-- Material Design for Bootstrap -->
+    <link href="{{ url_for('static', filename='css/roboto.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/material-fullpalette.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/ripples.min.css')}}" rel="stylesheet">
+
+
+  <!-- favicon
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='images/favicon.png') }}"/> -->
+  </head>
+<style type="text/css">
+  .navbar-nav > li{
+  font-size: 14px;
+}
+</style>
+  <body style="padding-top: 70px;">
+
+    <!-- Fixed navbar -->
+    {% include 'navbar.html' %}
+
+    <div class="container">
+      <div class="col-md-12">
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="col-md-5">
+                <div class="picture col-md-10 col-md-offset-1" id="picture1">
+                  <img style="width:100%" src="{{url_for('static', filename="imgs/img1")}}">
+                </div>
+
+            </div>
+
+            <div class="col-md-2" >
+
+            <div class="progress progress-striped active" style="margin-top:50%; height:20px">
+              <div id="perc" class="progress-bar"></div>
+            </div>
+               <a class="btn btn-inverse disabled  btn-raised" style="width:100%" type="submit"><div class="col-md-12" style="" id="percent"></div>%</a>
+
+            </div>
+
+            <div class="col-md-5 pull-right">
+              <div class="picture col-md-10 col-md-offset-1" id="picture2">
+                <img style="width:100%" src="{{url_for('static', filename="imgs/img2")}}">
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+            <div class="panel-group" id="accordion">
+      
+
+            <div class="panel panel-inverse">
+              <div class="panel-heading">
+                
+                    <h4 class="panel-title">
+                    <button data-toggle="collapse" class="btn btn-inverse btn-lg btn-block" data-parent="#accordion" href="#collapseOne">View Diff Image</button>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="picture col-md-10 col-md-offset-1" id="picture"></div>
+                </div>
+              </div>
+            </div>
+
+        </div> 
+      </div>
+
+        
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<script src="{{ url_for('static', filename='js/jquery.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <!--  <script src="{{ url_for('static', filename='js/custom-resemble.js')}}"></script> -->
+    <script src="{{ url_for('static', filename='js/resemble.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.classyloader.min.js')}}"></script>
+  </body>
+</html>
+
+<script type="text/javascript">
+var img1 = "{{url_for('static', filename="imgs/img1")}}" ;
+var img2 = "{{url_for('static', filename="imgs/img2")}}";
+var diff_image = new Image();
+var diffImage,per;
+
+  
+      diffImage = resemble(img1).compareTo(img2).ignoreAntialiasing().onComplete(function(data)
+      {
+         diff_image.src = data.getImageDataUrl();
+         console.log(data);
+         per = 100 - data.misMatchPercentage
+         $("#percent").text(per.toFixed(2))
+         return data;
+
+      } );
+      console.log(diffImage);
+      $("#picture").append(diff_image);
+
+      document.getElementById('perc').setAttribute("style","width:"+per.toFixed(0)+"%");
+
+</script>
+
