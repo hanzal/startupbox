@@ -1,3 +1,5 @@
+#Compare two images
+
 import matplotlib.pyplot as plt
 import cv2
 import sys
@@ -20,12 +22,15 @@ with open('img2', 'wb') as out_file:
    shutil.copyfileobj(response.raw, out_file)
 del response
 
+#load the images
 image1 = cv2.imread('img1')
 image2 = cv2.imread('img2')
+
 
 mimage1 = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)
 mimage2 = cv2.cvtColor(image2, cv2.COLOR_BGR2RGB)
 
+#compute color histogram and normalise
 hist1 = cv2.calcHist([mimage1], [0, 1, 2], None, [8, 8, 8],
 	[0, 256, 0, 256, 0, 256])
 hist1 = cv2.normalize(hist1).flatten()
@@ -33,13 +38,16 @@ hist2 = cv2.calcHist([mimage2], [0, 1, 2], None, [8, 8, 8],
 	[0, 256, 0, 256, 0, 256])
 hist2 = cv2.normalize(hist2).flatten()
 
-
+# compute the distance between the two histograms
+# using the correlation method 
 d = cv2.compareHist(hist1, hist2, cv2.cv.CV_COMP_CORREL)
+
+#printing similarity in percentage
 if d < 0:
 	d = 0
 print "Similarity  = %.2f%%" %(d*100)
 
-# show the query images
+#show the query images
 fig = plt.figure("Image1")
 ax = fig.add_subplot(1, 1, 1)
 ax.imshow(mimage1)
