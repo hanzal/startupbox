@@ -1,8 +1,6 @@
 from flask import Flask, request, render_template, url_for, redirect, flash, session, g, send_file, abort
 import requests
-
 import shutil
-
 import requests
 
 app = Flask(__name__)
@@ -17,16 +15,20 @@ def index():
 		image1 = request.form['image1']
 		image2 = request.form['image2']
 		print image1, image2
-		response = requests.get(image1, stream=True)
-		with open('static/imgs/img1', 'wb') as out_file:
-		    shutil.copyfileobj(response.raw, out_file)
-		del response
-		response = requests.get(image2, stream=True)
-		with open('static/imgs/img2', 'wb') as out_file:
-		    shutil.copyfileobj(response.raw, out_file)
-		del response
+		if not image1 or not image2:
+			flash('Enter the URLs' , 'warning')
+        	return render_template('index.html')
+        else:
+			response = requests.get(image1, stream=True)
+			with open('static/imgs/img1', 'wb') as out_file:
+			    shutil.copyfileobj(response.raw, out_file)
+			del response
+			response = requests.get(image2, stream=True)
+			with open('static/imgs/img2', 'wb') as out_file:
+			    shutil.copyfileobj(response.raw, out_file)
+			del response
 
-		return redirect(url_for('result'))
+			return redirect(url_for('result'))
 
 @app.route('/result')
 def result():
@@ -36,4 +38,4 @@ def result():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",port=5050)
+    app.run(host="0.0.0.0",port=8080)
